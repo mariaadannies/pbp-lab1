@@ -10,5 +10,5 @@ urlpatterns = [
     path('', show_wishlist, name='show_wishlist'),
     path('wishlist_xml/', show_wishlist_xml, name='show_wishlist_xml'),
     path('wishlist_json/', show_wishlist_json, name='show_wishlist_json'),
-    path('wishlist_json_id/<int:id>', show_wishlist_json_id, name='show_wishlist_json_id')
+    path('wishlist_json/<int:id>', show_wishlist_json_id, name='show_wishlist_json_id')
 ]
