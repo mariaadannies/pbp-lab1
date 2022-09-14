@@ -20,4 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('example_app.urls')),
     path('wishlist/', include('wishlist.urls')),
+    path('wishlist_xml/', include('wishlist.urls')),
+    path('wishlist_json_id/', include('wishlist.urls')),
 ]
