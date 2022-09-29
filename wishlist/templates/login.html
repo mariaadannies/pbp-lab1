@@ -6,12 +6,36 @@
 
 {% block content %}
 
-<div class = "login">
+<h1 class="text-center">Login</h1>
 
-    <h1>Login</h1>
+
+<div class= "d-flex align-items-center justify-content-center vh-100 login">
+
 
     <form method="POST" action="">
+
         {% csrf_token %}
+
+        <div class="mb-3 center">
+            <label for="exampleInputUsername1" class="form-label">Username</label>
+            <input type="text" name="username" placeholder="Username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="mb-3 center">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" name="password" placeholder="Password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button> <br> <br>
+
+        Belum mempunyai akun? <a href="{% url 'wishlist:register' %}">Buat Akun</a>
+    </form>
+
+    {% comment %} <form >
         <table>
             <tr>
                 <td>Username: </td>
@@ -28,7 +52,7 @@
                 <td><input class="btn login_btn" type="submit" value="Login"></td>
             </tr>
         </table>
-    </form>
+    </form> {% endcomment %}
 
     {% if messages %}
         <ul>
@@ -38,7 +62,7 @@
         </ul>
     {% endif %}     
         
-    Belum mempunyai akun? <a href="{% url 'wishlist:register' %}">Buat Akun</a>
+    {% comment %} Belum mempunyai akun? <a href="{% url 'wishlist:register' %}">Buat Akun</a> {% endcomment %}
 
 </div>
 
