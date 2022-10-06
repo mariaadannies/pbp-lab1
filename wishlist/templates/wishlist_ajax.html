@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function getDataForm($form){
+        var unindexed_array = $form.serializeArray();
+        var indexed_array = {};
+
+        $.map(unindexed_array, function(n, i){
+            indexed_array[n['name']] = n['value'];
+        });
+
+        return indexed_array;
+    }
+
+    $(document).ready(function(){
+        $.getJSON("{% url 'wishlist:show_wishlist_json' %}", function(data){
+            var items = [];
+            $.each(data, function(key, val){
+                var item = [];
+                var fields = val.fields;
+                item.push("<td" + val.fields.nama_barang + "</td>");
+                item.push("<td" + val.fields.harga_barang + "</td>");
+                item.push("<td" + val.fields.deskripsi + "</td>");
+                items.push("<tr>" + item.join("") + "</tr>");
+            });
+            document.getElementById("list_barang").innerHTML = items.join("");
+        })
+    });
+
+    $("#form_tambah_barang").submit(function(e){
+        e.preventDefault();
+        var form = $(this);
+        $("#btn_tambah_barang").prop("disabled", true);
+        $("#btn_tambah_barang").html("Loading...");
+        var $form = $(this);
+        var serializedData = getDataForm($form);
+        console.log(serializedData);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'wishlist:add_barang_using_json' %}",
+            data: serializedData,
+            dataType: 'text',
+            success: function(data){
+                alert("Data berhasil ditambahkan");
+                $("#btn_tambah_barang").prop("disabled", false);
+                $("#btn_tambah_barang").html("OK");
+                
+                $.getJSON("{% url 'wishlist:show_wishlist_json' %}", function(data){
+                    var items = [];
+                    $.each(data, function(key, val){
+                        var item = [];
+                        var fields = val.fields;
+                        item.push("<td" + val.fields.nama_barang + "</td>");
+                        item.push("<td" + val.fields.harga_barang + "</td>");
+                        item.push("<td" + val.fields.deskripsi + "</td>");
+                        items.push("<tr>" + item.join("") + "</tr>");
+                    });
+                    document.getElementById("list_barang").innerHTML = items.join("");
+                })
+            },
+            error: function(data){
+                alert("Data gagal ditambahkan");
+            }
+        });
+    });
+</script>
+
+
+
+<nav class="navbar bg-light">
+<div class="container-fluid ">
+    <span class="navbar-brand">Nama: {{nama}}</span>
+    <button><a href="{% url 'wishlist:logout' %}">Logout</a></button>
+</div>
+</nav>
+
+<h1>Daftar Wishlist</h1>
+
+
+<table class="table table-hover table-striped">
+    <tr>
+        <th>Nama Barang</th>
+        <th>Harga Barang</th>
+        <th>Deskripsi</th>
+    </tr>
+    {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
+    
+    {% for barang in list_barang %}
+    <tr>
+        <th>{{barang.nama_barang}}</th>
+        <th>{{barang.harga_barang}}</th>
+        <th>{{barang.deskripsi}}</th>
+    </tr>
+    <br>
+    
+{% endfor %}
+</table> <br> <br>
+
+<button type="submit" class="btn btn-primary">Get data</button> <br> <br>
+
+<form id="form_tambah_barang">
+    <div class="form-group">
+        <label for="nama_barang">Nama Barang</label>
+        <input type="text" class="form-control" id="nama_barang" name="nama_barang" placeholder="Masukkan nama barang">
+    </div>
+    <div class="form-group">
+        <label for="harga_barang">Harga Barang</label>
+        <input type="text" class="form-control" id="harga_barang" name="harga_barang" placeholder="Masukkan harga barang">
+    </div>
+    <div class="form-group">
+        <label for="deskripsi">Deskripsi</label>
+        <input type="text" class="form-control" id="deskripsi" name="deskripsi" placeholder="Masukkan deskripsi barang">
+    </div>
+    <button type="submit" id="btn_tambah_barang" class="btn btn-primary">Tambah Barang</button>
+</form>
+
+
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+
+{% endblock content %}

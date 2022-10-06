@@ -13,7 +13,6 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
 @login_required(login_url='/wishlist/login/')
-
 def show_wishlist(request):
     context = {
         'list_barang': data_barang_wishlist,
@@ -21,6 +20,29 @@ def show_wishlist(request):
         'last_login': request.COOKIES['last_login']
     }
     return render(request, "wishlist.html",context)
+
+@login_required(login_url='/wishlist/login/')
+def show_wishlist_ajax(request):
+    context = {
+        'list_barang': data_barang_wishlist,
+        'nama': 'Maria',
+        'last_login': request.COOKIES['last_login']
+    }
+    return render(request, "wishlist_ajax.html",context)
+
+@login_required(login_url='/wishlist/login/')
+def add_barang_using_json(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        barang = BarangWishlist.objects.create(
+            nama_barang = request.POST['nama_barang'],
+            harga_barang = request.POST['harga_barang'],
+            deskripsi = request.POST['deskripsi'],
+            barang = BarangWishlist.objects.create(nama_barang=nama_barang, harga_barang=harga_barang, deskripsi=deskripsi)
+        )
+        return JSONResponse({'error': False, 'message': 'Barang berhasil ditambahkan!'})
+    else:
+        return redirect('wishlist:show_wishlist_ajax')
 
 def show_wishlist_xml(request):
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")

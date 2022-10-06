@@ -35,25 +35,6 @@
         Belum mempunyai akun? <a href="{% url 'wishlist:register' %}">Buat Akun</a>
     </form>
 
-    {% comment %} <form >
-        <table>
-            <tr>
-                <td>Username: </td>
-                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
-            </tr>
-                    
-            <tr>
-                <td>Password: </td>
-                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
-            </tr>
-
-            <tr>
-                <td></td>
-                <td><input class="btn login_btn" type="submit" value="Login"></td>
-            </tr>
-        </table>
-    </form> {% endcomment %}
-
     {% if messages %}
         <ul>
             {% for message in messages %}
@@ -61,8 +42,6 @@
             {% endfor %}
         </ul>
     {% endif %}     
-        
-    {% comment %} Belum mempunyai akun? <a href="{% url 'wishlist:register' %}">Buat Akun</a> {% endcomment %}
 
 </div>
 
